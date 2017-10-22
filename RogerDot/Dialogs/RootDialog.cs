@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
+using System.Linq;
 
 namespace RogerDot.Dialogs
 {
@@ -18,14 +19,48 @@ namespace RogerDot.Dialogs
         private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
         {
             var activity = await result as Activity;
+            if (activity.Type == ActivityTypes.ConversationUpdate)
+            {
+                if (activity.MembersAdded != null && activity.MembersAdded.Any())
+                {
 
-            // calculate something for us to return
-            int length = (activity.Text ?? string.Empty).Length;
+                    //FASTFIX against double hello. because bot is also added to the conversation.
+                    //need to get bot id and name to enter it( current data is from emulator)
+                    if (!activity.MembersAdded.Contains(new ChannelAccount("4lba1dbhd68l", "Bot")))
+                        await context.PostAsync($"[RootDialog] Hi. This is a test version of bot. You can type \"info\"" +
+                            $" to get know what can i do for you");
+                }
+            } else
+            if (activity.Type == ActivityTypes.Message)
+            {
+                if (activity.Text.ToLower().Contains("info"))
+                {
+                    context.Call(new InfoDialog(), this.ResumeRootDialog);
+                } else if (activity.Text.ToLower().Contains("deanery"))
+                    context.Call(new DeaneryDialog(), this.ResumeRootDialog);
+                else if (activity.Text.ToLower().Contains("week"))
+                    context.Call(new WeekInfo.WeekInfoDialog(), this.ResumeRootDialog);
+                else await context.PostAsync("Dont know that command sorry");
+            } else
 
-            // return our reply to the user
-            await context.PostAsync($"You sent {activity.Text} which was {length} characters");
 
-            context.Wait(MessageReceivedAsync);
+                //this.ShowOptions(context);
+                context.Wait(MessageReceivedAsync);
+        }
+
+        private async Task ResumeRootDialog(IDialogContext context, IAwaitable<object> result)
+        {
+            try
+            {
+                var message = await result;
+                await context.PostAsync("Now what would you like me to do?");
+            } catch (Exception ex)
+            {
+                await context.PostAsync($"Failed with message: {ex.Message}");
+            } finally
+            {
+                context.Wait(this.MessageReceivedAsync);
+            }
         }
     }
 }
