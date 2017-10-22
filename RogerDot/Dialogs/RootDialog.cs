@@ -23,10 +23,9 @@ namespace RogerDot.Dialogs
             {
                 if (activity.MembersAdded != null && activity.MembersAdded.Any())
                 {
-
-                    //FASTFIX against double hello. because bot is also added to the conversation.
-                    //need to get bot id and name to enter it( current data is from emulator)
-                    if (!activity.MembersAdded.Contains(new ChannelAccount("4lba1dbhd68l", "Bot")))
+                    
+                    var bot = activity.MembersAdded.First();
+                    if (!(activity.MembersAdded.First().Name=="Bot"))
                         await context.PostAsync($"[RootDialog] Hi. This is a test version of bot. You can type \"info\"" +
                             $" to get know what can i do for you");
                 }
