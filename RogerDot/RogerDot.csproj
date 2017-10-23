@@ -105,6 +105,7 @@
   <ItemGroup>
     <Content Include="default.htm" />
     <Content Include="Global.asax" />
+    <Content Include="images\test.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -114,6 +115,7 @@
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Dialogs\DeaneryDialog.cs" />
     <Compile Include="Dialogs\InfoDialog.cs" />
+    <Compile Include="Dialogs\OnMapDialog.cs" />
     <Compile Include="Dialogs\RootDialog.cs" />
     <Compile Include="Dialogs\WeekInfo\WeekInfo.cs" />
     <Compile Include="Dialogs\WeekInfo\WeekInfoDialog.cs" />
@@ -133,6 +135,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

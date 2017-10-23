@@ -36,9 +36,11 @@ namespace RogerDot.Dialogs
                 {
                     context.Call(new InfoDialog(), this.ResumeRootDialog);
                 } else if (activity.Text.ToLower().Contains("deanery"))
-                    context.Call(new DeaneryDialog(), this.ResumeRootDialog);
+                    context.Call(new OnMapDialog(), this.ResumeRootDialog);
                 else if (activity.Text.ToLower().Contains("week"))
                     context.Call(new WeekInfo.WeekInfoDialog(), this.ResumeRootDialog);
+                else if (activity.Text.ToLower().Contains("find"))
+                    context.Call(new OnMapDialog(), this.ResumeRootDialog);
                 else await context.PostAsync("Dont know that command sorry");
             } else
 
